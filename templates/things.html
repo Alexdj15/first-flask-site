@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<a href="/">Home</a>
+<h1>Things list</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Task ID</th>
+            <th>Name</th>
+            <th>Owner SSN</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for thing in things %}
+            <tr>
+                <td>{{ thing.tid }}</td>
+                <td>{{ thing.description }}</td>
+                <td>{{ thing.owner }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <p>There are no things in the database</p>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

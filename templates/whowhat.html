@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<a href="/">Home</a>
+<h1>Who owns what</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Person</th>
+            <th>Things</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if personthinglist %}
+            {% for entry in personthinglist %}
+                <tr>
+                    <td>{{ entry.person.firstname }} {{ entry.person.lastname }}</td>
+                    <td>
+                        {% if entry.things %}
+                            {% for thing in entry.things %}
+                                {{ thing.description }}<br>
+                            {% endfor %}
+                        {% else %}
+                            No things owned
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="2">There are no people in the database</td>
+            </tr>
+        {% endif %}
+    </tbody>
+</table>
+{% endblock %}

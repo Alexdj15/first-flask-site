@@ -5,6 +5,7 @@ from sqlalchemy_utils.functions import database_exists
 from flask import Flask, render_template, abort, url_for, request, redirect, session
 # Use pip install -r requirements.txt to install modules
 
+app = Flask(__name__)
 Base = declarative_base()
 
 class Person(Base): 
@@ -48,9 +49,6 @@ if database_exists(db_url):
     Base.metadata.create_all(bind=engine) #create a new connection to the database and open a session
     Session = sessionmaker(bind=engine)
     session = Session()
-    results=session.query(Thing, Person).filter(Thing.owner == Person.ssn).filter(Person.firstname == "Anna").all()
-    for r in results:
-        print(r)
 else: #database does not exist so add some data
     print("database does not exist - so create it and add some data")
     Base.metadata.create_all(bind=engine)
@@ -63,6 +61,7 @@ else: #database does not exist so add some data
     p3 = Person(3, "Harris", "Kemp", "M", 21)
     p4 = Person(4, "Ridwan", "Mcqrath", "M", 31)
     p5 = Person(5, "Honey", "Norton", "F", 47)
+    p6 = Person(6, "Test", "Person", "T", 100)
 
     t1 = Thing(1, "Keyboard", 5)
     t2 = Thing(2, "Mouse", 4)
@@ -90,6 +89,38 @@ else: #database does not exist so add some data
     session.add(t8)
     session.add(t9)
     session.add(t10)
+
     session.commit()
 
+@app.route("/")
+def home():
+    return render_template('home.html')
 
+@app.route("/people")
+def people():
+    people = session.query(Person).all()
+    return render_template('people.html', people=people)
+
+@app.route("/things")
+def things():
+    things = session.query(Thing).all()
+    return render_template('things.html', things=things)
+
+@app.route("/whowhat")
+def whowhat():
+    person_things_list = []
+    people = session.query(Person).all()
+    
+    for person in people:
+        things = session.query(Thing).filter(Thing.owner == person.ssn).all()
+        person_things_list.append({
+            "person": person,
+            "things": things
+        })
+    
+    return render_template("whowhat.html", personthinglist=person_things_list)
+
+    
+
+if __name__ == "__main__":
+    app.run(debug=True, host="127.0.0.1", port=8080)

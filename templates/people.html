@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<a href="/">Home</a>
+<h1>People list</h1>
+<table>
+    <thead>
+        <tr>
+            <th>SSN</th>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Age</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for person in people %}
+            <tr>
+                <td>{{ person.ssn }}</td>
+                <td>{{ person.firstname }} {{ person.lastname }}</td>
+                <td>{{ person.gender }}</td>
+                <td>{{ person.age }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <p>There are no people in the database</p>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
