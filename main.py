@@ -40,7 +40,6 @@ class Thing(Base):
     def __repr__(self):
         return f"({self.tid}) {self.description} owned by {self.owner}"
 
-
 db_url = "sqlite:///main.db" #variable for database URL
 engine = create_engine(db_url, echo=True)
 
@@ -80,6 +79,7 @@ else: #database does not exist so add some data
     session.add(p2)
     session.add(p3)
     session.add(p4)
+    session.add(p5)
     session.add(t1)
     session.add(t2)
     session.add(t3)
